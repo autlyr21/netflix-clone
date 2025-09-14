@@ -1,0 +1,152 @@
+a {
+  text-decoration: none;
+}
+
+:root {
+  --bg-color: rgb(20, 20, 20);
+  --gray-base: #e5e5e5;
+}
+
+.bg-base {
+  background-color: var(--bg-color);
+}
+
+.text-gray {
+  color: var(--gray-base);
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-sm {
+  font-size: 14px;
+}
+
+.w-24 {
+  width: 24px;
+}
+
+.w-32 {
+  width: 24px;
+}
+
+.h-24 {
+  height: 24px;
+}
+
+.h-32 {
+  height: 24px;
+}
+
+.h-40 {
+  height: 40px;
+}
+
+.h-68 {
+  height: 68px;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.m-8 {
+  margin: 8px;
+}
+
+.m-16 {
+  margin: 16px;
+}
+
+.m-24 {
+  margin: 24px;
+}
+
+.m-32 {
+  margin: 32px;
+}
+
+.mx-8 {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+.mx-16 {
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+.mx-24 {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.mx-32 {
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
+.p-8 {
+  padding: 8px;
+}
+
+.p-16 {
+  padding: 16px;
+}
+
+.p-24 {
+  padding: 24px;
+}
+
+.p-32 {
+  padding: 32px;
+}
+
+.px-32 {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.pl-32 {
+  padding-left: 32px;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.page {
+  width: 1440px;
+  margin: 0 auto;
+}
+
+.sticky {
+  position: sticky;
+}
+
+.top-0 {
+  top: 0px;
+}
