@@ -239,7 +239,7 @@ body {
   justify-items: start;
   scrollbar-width: none;
   height: 123px;
-  overflow: show;
+  overflow: hidden;
 }
 
 
@@ -285,4 +285,46 @@ button {
 .infoBtn {
   background-color: rgba(109, 109, 110, 0.7);
   color: white;
+}
+
+.footerWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 32px;
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.footerSnsRow {
+  display: flex;
+  flex-direction: flex-row;
+  height: 29px;
+  align-items: center;
+  gap: 24px;
+}
+
+.footerEtcGrid {
+  display: grid;
+  grid-template-columns: 221px 221px 221px 221px;
+  color: grey;
+}
+
+a:-webkit-any-link {
+  text-decoration: none;
+  color: gray
+}
+
+.footerEtcElement {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-items: start;
+  height: 22px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.snsImg {
+  height: 29px;
+  width: 36px;
 }
