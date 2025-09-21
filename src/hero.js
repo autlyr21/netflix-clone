@@ -22,7 +22,7 @@ const composeHeroImage = () => {
 };
 const composeHeroOverlay = () => {
   const heroOverlay = createStyledElement("div", [
-    "w-[518px] pl-[32px] text-white justify-center top-0 gap-[8px] h-[500px] flex flex-col absolute",
+    "w-[518px] pl-[60px] text-white justify-center top-0 gap-[8px] h-full flex flex-col absolute",
   ]);
   const heroOverlayImg = createStyledElement("img", ["w-full"]);
   heroOverlayImg.src = "assets/section/hero_overlay.webp";

@@ -9,7 +9,7 @@
   <link href="./style.css" rel="stylesheet" />
 </head>
 
-<body class="w-screen h-screen flex flex-col relative bg-base">
+<body class="w-screen flex flex-col relative bg-base overflow-y-scroll">
   <script type="module" src="app.js"></script>
 </body>
 
@@ -17,5 +17,11 @@
 <style>
   html {
     font-size: 9px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 </style>

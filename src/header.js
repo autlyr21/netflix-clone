@@ -3,7 +3,7 @@ import { createStyledElement } from "./utils.js";
 export const renderHeader = () => {
   const body = document.body;
   const header = createStyledElement("header", [
-    "bg-transparent duration-700 fixed top-0 w-screen h-header-narrow netflix:h-header-wide px-wrapper-narrow netflix:px-wrapper-wide flex flex-row items-center justify-between z-50",
+    "bg-transparent duration-700 fixed top-0 w-screen h-header-narrow netflix:h-header-wide px-wrapper-wide flex flex-row items-center justify-between z-50",
   ]);
   const logo = composeLogo();
   const menu = composeMenu();
@@ -11,6 +11,15 @@ export const renderHeader = () => {
   header.appendChild(logo);
   header.appendChild(menu);
   header.appendChild(profileMenu);
+
+  window.addEventListener("scroll", (e) => {
+    if (window.scrollY <= 0) {
+      header.style.backgroundColor = "transparent";
+    } else {
+      header.style.backgroundColor = "rgb(20,20,20)";
+    }
+  });
+
   body.appendChild(header);
 
   const shadowDiv = composeShadowDiv();
