@@ -1,4 +1,4 @@
-import { createStyledElement } from "./utils.js";
+import { createStyledElement } from "./utils";
 
 export const renderFooter = () => {
   const body = document.body;

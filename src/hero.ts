@@ -1,4 +1,4 @@
-import { createStyledElement } from "./utils.js";
+import { createStyledElement } from "./utils";
 
 export const renderHero = () => {
   const body = document.body;
