@@ -3,7 +3,8 @@ import { renderHeader } from "./header";
 import { renderHero } from "./hero";
 import { renderSection } from "./section";
 
-renderHeader();
-renderHero();
-renderSection();
-renderFooter();
+const body = document.body;
+renderHeader(body);
+renderHero(body);
+renderSection(body);
+renderFooter(body);

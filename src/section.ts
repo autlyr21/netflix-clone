@@ -1,20 +1,19 @@
 import { createStyledElement } from "./utils";
 
-export const renderSection = () => {
-  const body = document.body;
+export const renderSection = (body: HTMLElement) => {
   const data0 = [
-    { src: "assets/section/section_1_1.webp" },
-    { src: "assets/section/section_1_2.webp" },
-    { src: "assets/section/section_1_3.webp" },
-    { src: "assets/section/section_1_4.webp" },
-    { src: "assets/section/section_1_5.webp" },
-    { src: "assets/section/section_1_6.webp" },
-    { src: "assets/section/section_2_1.webp" },
-    { src: "assets/section/section_2_2.webp" },
-    { src: "assets/section/section_2_3.webp" },
-    { src: "assets/section/section_2_4.webp" },
-    { src: "assets/section/section_2_5.webp" },
-    { src: "assets/section/section_2_6.webp" },
+    { src: "/section/section_1_1.webp" },
+    { src: "/section/section_1_2.webp" },
+    { src: "/section/section_1_3.webp" },
+    { src: "/section/section_1_4.webp" },
+    { src: "/section/section_1_5.webp" },
+    { src: "/section/section_1_6.webp" },
+    { src: "/section/section_2_1.webp" },
+    { src: "/section/section_2_2.webp" },
+    { src: "/section/section_2_3.webp" },
+    { src: "/section/section_2_4.webp" },
+    { src: "/section/section_2_5.webp" },
+    { src: "/section/section_2_6.webp" },
   ];
   const carousel0 = composeCarousel("Sample0", data0, 5);
   const carousel1 = composeCarousel("Sample1", data0, 4);
@@ -23,7 +22,11 @@ export const renderSection = () => {
   body.appendChild(carousel1);
   body.appendChild(carousel2);
 };
-export const composeCarousel = (title, data, pageSize) => {
+export const composeCarousel = (
+  title: string,
+  data: string,
+  pageSize: number,
+): HTMLElement => {
   let page = 0;
   const totalPages = Math.ceil(data.length / pageSize);
   const nextScrollQty = new Array(totalPages).fill(pageSize);

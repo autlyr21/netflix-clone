@@ -1,7 +1,6 @@
 import { createStyledElement } from "./utils";
 
-export const renderHero = () => {
-  const body = document.body;
+export const renderHero = (body: HTMLElement) => {
   const hero = createStyledElement("section", [
     "flex flex-col w-screen relative",
   ]);
@@ -14,18 +13,18 @@ export const renderHero = () => {
   hero.appendChild(shadowDiv);
   body.appendChild(hero);
 };
-const composeHeroImage = () => {
+const composeHeroImage = (): HTMLElement => {
   const heroImg = createStyledElement("img", ["w-full"]);
-  heroImg.src = "assets/section/hero_bg.webp";
+  heroImg.src = "/section/hero_bg.webp";
   heroImg.alt = "Hero Image";
   return heroImg;
 };
-const composeHeroOverlay = () => {
+const composeHeroOverlay = (): HTMLElement => {
   const heroOverlay = createStyledElement("div", [
     "w-[518px] pl-[60px] text-white justify-center top-0 gap-[8px] h-full flex flex-col absolute",
   ]);
   const heroOverlayImg = createStyledElement("img", ["w-full"]);
-  heroOverlayImg.src = "assets/section/hero_overlay.webp";
+  heroOverlayImg.src = "/section/hero_overlay.webp";
   heroOverlay.appendChild(heroOverlayImg);
   const heroTitle = createStyledElement("h2", ["text-[23px]"]);
   heroTitle.innerText = "시청자 추천";
@@ -43,7 +42,7 @@ const composeHeroOverlay = () => {
     "rounded-[4px] cursor-pointer flex flex-row gap-[8px] text-black items-center px-[16px] py-[8px] border-transparent bg-white hover:opacity-70",
   ]);
   const playImg = createStyledElement("img");
-  playImg.src = "assets/section/play.svg";
+  playImg.src = "/section/play.svg";
   playImg.alt = "play button icon";
   playBtn.appendChild(playImg);
   const playText = createStyledElement("p");
@@ -54,7 +53,7 @@ const composeHeroOverlay = () => {
   ]);
   const infoImg = createStyledElement("img");
 
-  infoImg.src = "assets/section/info.svg";
+  infoImg.src = "/section/info.svg";
   infoImg.alt = "info button icon";
   infoBtn.appendChild(infoImg);
   const infoText = createStyledElement("p");
@@ -69,7 +68,7 @@ const composeHeroOverlay = () => {
   return heroOverlay;
 };
 
-const composeShadowDiv = () => {
+const composeShadowDiv = (): HTMLDivElement => {
   const shadowDiv = createStyledElement("div", [
     "grid absolute bottom-0 w-screen h-[100px] bg-linear-to-b from-base/0 to-base/100",
   ]);

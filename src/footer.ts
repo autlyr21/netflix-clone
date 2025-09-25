@@ -1,8 +1,6 @@
 import { createStyledElement } from "./utils";
 
-export const renderFooter = () => {
-  const body = document.body;
-
+export const renderFooter = (body: HTMLElement) => {
   const footer = createStyledElement("footer", [
     "flex flex-col mt-[32px] mx-[32px]",
   ]);
@@ -11,10 +9,10 @@ export const renderFooter = () => {
   ]);
 
   const snsImages = [
-    "assets/footer/facebook.svg",
-    "assets/footer/instagram.svg",
-    "assets/footer/twitter.svg",
-    "assets/footer/youtube.svg",
+    "/footer/facebook.svg",
+    "/footer/instagram.svg",
+    "/footer/twitter.svg",
+    "/footer/youtube.svg",
   ];
 
   snsImages.forEach((imgSrc) => {
