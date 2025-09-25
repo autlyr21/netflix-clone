@@ -1,28 +1,28 @@
-import { createStyledElement } from "./utils";
+import { appendChildrenSync, createStyledElement } from "./utils";
 
-export const renderHeader = async (body: HTMLElement) => {
+export const composeHeader = async (): Promise<HTMLElement[]> => {
   const header = createStyledElement("header", [
     "bg-transparent duration-700 fixed top-0 w-screen h-header-narrow netflix:h-header-wide px-wrapper-wide flex flex-row items-center justify-between z-50",
   ]);
-  const logo = composeLogo();
-  const menu = composeMenu();
-  const profileMenu = await composeProfileMenu();
-  header.appendChild(logo);
-  header.appendChild(menu);
-  header.appendChild(profileMenu);
-
-  window.addEventListener("scroll", (e) => {
-    if (window.scrollY <= 0) {
-      header.style.backgroundColor = "transparent";
-    } else {
-      header.style.backgroundColor = "rgb(20,20,20)";
-    }
-  });
-
-  body.appendChild(header);
+  await appendChildrenSync(header, [
+    composeLogo,
+    composeMenu,
+    composeProfileMenu,
+  ]);
+  changeBgOnScroll(header);
 
   const shadowDiv = composeShadowDiv();
-  body.appendChild(shadowDiv);
+  return [header, shadowDiv];
+};
+
+const changeBgOnScroll = (elem: HTMLElement) => {
+  window.addEventListener("scroll", () => {
+    if (window.scrollY <= 0) {
+      elem.style.backgroundColor = "transparent";
+    } else {
+      elem.style.backgroundColor = "rgb(20,20,20)";
+    }
+  });
 };
 
 const composeShadowDiv = (): HTMLDivElement => {
@@ -102,7 +102,7 @@ const composeProfileMenu = async (): Promise<HTMLElement> => {
   profileA.appendChild(profileImg);
   profileMenu.appendChild(profileA);
 
-  const profileDropdown = composeProfileDropdown();
+  const profileDropdown = await composeProfileDropdown();
   profileMenu.appendChild(profileDropdown);
 
   const notificationDropdown = await composeNotificationDropdown();
@@ -175,7 +175,17 @@ const composeProfileMenu = async (): Promise<HTMLElement> => {
 
   return profileMenu;
 };
-const composeProfileDropdown = (): HTMLElement => {
+const composeProfileDropdown = async (): Promise<HTMLElement> => {
+  const composeProfileDropdownRow = (title: string): HTMLElement => {
+    const li = createStyledElement("li");
+    const a = createStyledElement("a", [
+      "flex flex-row h-[50px] px-[8px] w-full items-center justify-start hover:underline",
+    ]);
+    a.innerText = title;
+    li.appendChild(a);
+    return li;
+  };
+
   const profileDropdown = createStyledElement("ul", [
     "absolute flex flex-col top-[51px] right-0 w-[220px] h-[300px] bg-base/70 text-white",
   ]);
@@ -188,98 +198,58 @@ const composeProfileDropdown = (): HTMLElement => {
     "고객센터",
     "넷플릭스에서 로그아웃",
   ];
-  data.forEach((d) => {
-    const row = composeProfileDropdownRow(d);
-    profileDropdown.appendChild(row);
-  });
+  await appendChildrenSync(
+    profileDropdown,
+    data.map((d) => composeProfileDropdownRow(d)),
+  );
   return profileDropdown;
 };
 const composeNotificationDropdown = async (): Promise<HTMLElement> => {
-  const notificationDropdown = createStyledElement("ul", [
-    "absolute flex flex-col top-[51px] right-[38px] w-[408px] h-[570px] bg-base/70 text-white text-[9px]",
-  ]);
-  notificationDropdown.style.visibility = "hidden";
+  const composeNotificationRow = (
+    src: string,
+    detail: string,
+    date: string,
+  ): HTMLElement => {
+    const li = createStyledElement("li");
+    const a = createStyledElement("a", [
+      "flex flow-row h-[95px] w-[408px] bg-base/70 hover:bg-base/100",
+    ]);
+    const descriptionCol = createStyledElement("div", [
+      "flex flex-col items-start justify-center h-[95px]",
+    ]);
+    const description = createStyledElement("p", ["text-[14px]"]);
+    description.innerText = detail;
+    const dateP = createStyledElement("p", ["text-gray-200"]);
+    dateP.innerText = date;
+    descriptionCol.appendChild(description);
+    descriptionCol.appendChild(dateP);
+    const imgSlot = createStyledElement("div", [
+      "grid place-items-center h-[95px] w-[144px]",
+    ]);
+    const coverImg = createStyledElement("img", ["w-[122px] h-[63px]"]);
+    coverImg.src = src;
+    coverImg.alt = `${detail}의 커버 이미지`;
+    imgSlot.appendChild(coverImg);
+    a.appendChild(imgSlot);
+    a.appendChild(descriptionCol);
+    li.appendChild(a);
+    return li;
+  };
+
   const notiFetchReq = await fetch("/data/notifications.json", {
     method: "GET",
   });
   const data = await notiFetchReq.json();
-
-  // const data = [
-  //   {
-  //     src: "/header/noti1.webp",
-  //     detail: "넷플릭스 '신규 콘텐츠 가이드'\n공개 예정작을 살펴보세요.",
-  //     date: "2주 전",
-  //   },
-  //   {
-  //     src: "/header/noti2.webp",
-  //     detail: "신규 콘텐츠\n폭군의 셰프",
-  //     date: "3주 전",
-  //   },
-  //   {
-  //     src: "/header/noti3.webp",
-  //     detail: "대한민국의 TOP 10 시리즈\n인기 콘텐츠를 확인해 보세요.",
-  //     date: "1개월",
-  //   },
-  //   {
-  //     src: "/header/noti4.webp",
-  //     detail: "신규 콘텐츠\n파이널 드래프트",
-  //     date: "1개월",
-  //   },
-  //   {
-  //     src: "/header/noti5.webp",
-  //     detail: "<브람스를 좋아하세요?> 시청 완료!\n다음으로는 뭘 볼까요?",
-  //     date: "1개월",
-  //   },
-  //   {
-  //     src: "/header/noti6.webp",
-  //     detail: "사카모토 데이즈\n새로운 에피소드 등록 알림",
-  //     date: "1개월",
-  //   },
-  // ];
-  data.forEach(({ src, detail, date }) => {
-    const row = composeNotificationRow(src, detail, date);
-    notificationDropdown.appendChild(row);
-  });
+  const notificationDropdown = createStyledElement("ul", [
+    "absolute flex flex-col top-[51px] right-[38px] w-[408px] h-[570px] bg-base/70 text-white text-[9px]",
+  ]);
+  notificationDropdown.style.visibility = "hidden";
+  await appendChildrenSync(
+    notificationDropdown,
+    data.map(({ src, detail, date }) =>
+      composeNotificationRow(src, detail, date),
+    ),
+  );
 
   return notificationDropdown;
-};
-const composeNotificationRow = (
-  src: string,
-  detail: string,
-  date: string,
-): HTMLElement => {
-  const li = createStyledElement("li");
-  const a = createStyledElement("a", [
-    "flex flow-row h-[95px] w-[408px] bg-base/70 hover:bg-base/100",
-  ]);
-  const descriptionCol = createStyledElement("div", [
-    "flex flex-col items-start justify-center h-[95px]",
-  ]);
-  const description = createStyledElement("p", ["text-[14px]"]);
-  description.innerText = detail;
-  const dateP = createStyledElement("p", ["text-gray-200"]);
-  dateP.innerText = date;
-  descriptionCol.appendChild(description);
-  descriptionCol.appendChild(dateP);
-  const imgSlot = createStyledElement("div", [
-    "grid place-items-center h-[95px] w-[144px]",
-  ]);
-  const coverImg = createStyledElement("img", ["w-[122px] h-[63px]"]);
-  coverImg.src = src;
-  coverImg.alt = `${detail}의 커버 이미지`;
-  imgSlot.appendChild(coverImg);
-  a.appendChild(imgSlot);
-  a.appendChild(descriptionCol);
-  li.appendChild(a);
-  return li;
-};
-
-const composeProfileDropdownRow = (title: string): HTMLElement => {
-  const li = createStyledElement("li");
-  const a = createStyledElement("a", [
-    "flex flex-row h-[50px] px-[8px] w-full items-center justify-start hover:underline",
-  ]);
-  a.innerText = title;
-  li.appendChild(a);
-  return li;
 };

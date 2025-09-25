@@ -1,24 +1,19 @@
-import { createStyledElement } from "./utils";
+import { appendChildrenSync, createStyledElement } from "./utils";
 
-export const renderHero = async (body: HTMLElement) => {
+export const composeHero = async (): Promise<HTMLElement> => {
   const heroFetchRes = await fetch("/data/hero.json");
   const { background, overlay } = await heroFetchRes.json();
 
   const hero = createStyledElement("section", [
     "flex flex-col w-screen relative",
   ]);
-  const heroImg = composeHeroImage(background.src);
-  const heroOverlay = composeHeroOverlay(
-    overlay.src,
-    overlay.title,
-    overlay.description,
-  );
-  const shadowDiv = composeShadowDiv();
+  await appendChildrenSync(hero, [
+    composeHeroImage(background.src),
+    composeHeroOverlay(overlay.src, overlay.title, overlay.description),
+    composeShadowDiv,
+  ]);
 
-  hero.appendChild(heroImg);
-  hero.appendChild(heroOverlay);
-  hero.appendChild(shadowDiv);
-  body.appendChild(hero);
+  return hero;
 };
 const composeHeroImage = (src: string): HTMLElement => {
   const heroImg = createStyledElement("img", ["w-full"]);

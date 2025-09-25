@@ -1,6 +1,6 @@
 import { createStyledElement } from "./utils";
 
-export const renderSection = async (body: HTMLElement) => {
+export const composeSections = async (): Promise<HTMLElement[]> => {
   const sectionDataSrcs = [
     "/data/section_1.json",
     "/data/section_2.json",
@@ -12,14 +12,14 @@ export const renderSection = async (body: HTMLElement) => {
   const sectionDataArr = await Promise.all(
     sectionDataResArr.map((r) => r.json()),
   );
-  sectionDataArr.forEach((sectionData) => {
-    const carousel = composeCarousel(
+  const sections = sectionDataArr.map((sectionData) => {
+    return composeCarousel(
       sectionData.title,
       sectionData.data,
       sectionData.pageSize,
     );
-    body.appendChild(carousel);
   });
+  return sections;
 };
 export const composeCarousel = (
   title: string,

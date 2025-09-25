@@ -1,10 +1,13 @@
-import { renderFooter } from "./footer";
-import { renderHeader } from "./header";
-import { renderHero } from "./hero";
-import { renderSection } from "./section";
+import { composeFooter } from "./footer";
+import { composeHeader } from "./header";
+import { composeHero } from "./hero";
+import { composeSections } from "./section";
+import { appendChildrenSync } from "./utils";
 
 const body = document.body;
-await renderHeader(body);
-await renderHero(body);
-await renderSection(body);
-renderFooter(body);
+await appendChildrenSync(body, [
+  composeHeader,
+  composeHero,
+  composeSections,
+  composeFooter,
+]);
