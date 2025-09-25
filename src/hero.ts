@@ -1,11 +1,18 @@
 import { createStyledElement } from "./utils";
 
-export const renderHero = (body: HTMLElement) => {
+export const renderHero = async (body: HTMLElement) => {
+  const heroFetchRes = await fetch("/data/hero.json");
+  const { background, overlay } = await heroFetchRes.json();
+
   const hero = createStyledElement("section", [
     "flex flex-col w-screen relative",
   ]);
-  const heroImg = composeHeroImage();
-  const heroOverlay = composeHeroOverlay();
+  const heroImg = composeHeroImage(background.src);
+  const heroOverlay = composeHeroOverlay(
+    overlay.src,
+    overlay.title,
+    overlay.description,
+  );
   const shadowDiv = composeShadowDiv();
 
   hero.appendChild(heroImg);
@@ -13,25 +20,28 @@ export const renderHero = (body: HTMLElement) => {
   hero.appendChild(shadowDiv);
   body.appendChild(hero);
 };
-const composeHeroImage = (): HTMLElement => {
+const composeHeroImage = (src: string): HTMLElement => {
   const heroImg = createStyledElement("img", ["w-full"]);
-  heroImg.src = "/section/hero_bg.webp";
+  heroImg.src = src;
   heroImg.alt = "Hero Image";
   return heroImg;
 };
-const composeHeroOverlay = (): HTMLElement => {
+const composeHeroOverlay = (
+  src: string,
+  title: string,
+  description: string,
+): HTMLElement => {
   const heroOverlay = createStyledElement("div", [
     "w-[518px] pl-[60px] text-white justify-center top-0 gap-[8px] h-full flex flex-col absolute",
   ]);
   const heroOverlayImg = createStyledElement("img", ["w-full"]);
-  heroOverlayImg.src = "/section/hero_overlay.webp";
+  heroOverlay.src = src;
   heroOverlay.appendChild(heroOverlayImg);
   const heroTitle = createStyledElement("h2", ["text-[23px]"]);
-  heroTitle.innerText = "시청자 추천";
+  heroTitle.innerText = title;
 
   const heroDescription = createStyledElement("p", ["text-[14px]"]);
-  heroDescription.innerText =
-    "직업이 없는 싱글 여성. 예상치 못한 사건들을 겪은 후, 연애 경험이 없는\n샐러리맨을 위해 일하게 된다. 직책이 뭐냐고? 그건 바로 그의 아내.";
+  heroDescription.innerText = description;
   heroOverlay.appendChild(heroTitle);
   heroOverlay.appendChild(heroDescription);
 

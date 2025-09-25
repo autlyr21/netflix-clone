@@ -1,12 +1,12 @@
 import { createStyledElement } from "./utils";
 
-export const renderHeader = (body: HTMLElement) => {
+export const renderHeader = async (body: HTMLElement) => {
   const header = createStyledElement("header", [
     "bg-transparent duration-700 fixed top-0 w-screen h-header-narrow netflix:h-header-wide px-wrapper-wide flex flex-row items-center justify-between z-50",
   ]);
   const logo = composeLogo();
   const menu = composeMenu();
-  const profileMenu = composeProfileMenu();
+  const profileMenu = await composeProfileMenu();
   header.appendChild(logo);
   header.appendChild(menu);
   header.appendChild(profileMenu);
@@ -70,7 +70,7 @@ const composeMenu = (): HTMLElement => {
 
   return navMenu;
 };
-const composeProfileMenu = (): HTMLElement => {
+const composeProfileMenu = async (): Promise<HTMLElement> => {
   const profileMenu = createStyledElement("nav", [
     "flex flex-row relative text-[1.2rem] gap-[12px] h-full items-center",
   ]);
@@ -105,7 +105,7 @@ const composeProfileMenu = (): HTMLElement => {
   const profileDropdown = composeProfileDropdown();
   profileMenu.appendChild(profileDropdown);
 
-  const notificationDropdown = composeNotificationDropdown();
+  const notificationDropdown = await composeNotificationDropdown();
   profileMenu.appendChild(notificationDropdown);
 
   let profileDropdownTimeoutCnt;
@@ -194,43 +194,48 @@ const composeProfileDropdown = (): HTMLElement => {
   });
   return profileDropdown;
 };
-const composeNotificationDropdown = (): HTMLElement => {
+const composeNotificationDropdown = async (): Promise<HTMLElement> => {
   const notificationDropdown = createStyledElement("ul", [
     "absolute flex flex-col top-[51px] right-[38px] w-[408px] h-[570px] bg-base/70 text-white text-[9px]",
   ]);
   notificationDropdown.style.visibility = "hidden";
-  const data = [
-    {
-      src: "/header/noti1.webp",
-      detail: "넷플릭스 '신규 콘텐츠 가이드'\n공개 예정작을 살펴보세요.",
-      date: "2주 전",
-    },
-    {
-      src: "/header/noti2.webp",
-      detail: "신규 콘텐츠\n폭군의 셰프",
-      date: "3주 전",
-    },
-    {
-      src: "/header/noti3.webp",
-      detail: "대한민국의 TOP 10 시리즈\n인기 콘텐츠를 확인해 보세요.",
-      date: "1개월",
-    },
-    {
-      src: "/header/noti4.webp",
-      detail: "신규 콘텐츠\n파이널 드래프트",
-      date: "1개월",
-    },
-    {
-      src: "/header/noti5.webp",
-      detail: "<브람스를 좋아하세요?> 시청 완료!\n다음으로는 뭘 볼까요?",
-      date: "1개월",
-    },
-    {
-      src: "/header/noti6.webp",
-      detail: "사카모토 데이즈\n새로운 에피소드 등록 알림",
-      date: "1개월",
-    },
-  ];
+  const notiFetchReq = await fetch("/data/notifications.json", {
+    method: "GET",
+  });
+  const data = await notiFetchReq.json();
+
+  // const data = [
+  //   {
+  //     src: "/header/noti1.webp",
+  //     detail: "넷플릭스 '신규 콘텐츠 가이드'\n공개 예정작을 살펴보세요.",
+  //     date: "2주 전",
+  //   },
+  //   {
+  //     src: "/header/noti2.webp",
+  //     detail: "신규 콘텐츠\n폭군의 셰프",
+  //     date: "3주 전",
+  //   },
+  //   {
+  //     src: "/header/noti3.webp",
+  //     detail: "대한민국의 TOP 10 시리즈\n인기 콘텐츠를 확인해 보세요.",
+  //     date: "1개월",
+  //   },
+  //   {
+  //     src: "/header/noti4.webp",
+  //     detail: "신규 콘텐츠\n파이널 드래프트",
+  //     date: "1개월",
+  //   },
+  //   {
+  //     src: "/header/noti5.webp",
+  //     detail: "<브람스를 좋아하세요?> 시청 완료!\n다음으로는 뭘 볼까요?",
+  //     date: "1개월",
+  //   },
+  //   {
+  //     src: "/header/noti6.webp",
+  //     detail: "사카모토 데이즈\n새로운 에피소드 등록 알림",
+  //     date: "1개월",
+  //   },
+  // ];
   data.forEach(({ src, detail, date }) => {
     const row = composeNotificationRow(src, detail, date);
     notificationDropdown.appendChild(row);

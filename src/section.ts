@@ -1,26 +1,25 @@
 import { createStyledElement } from "./utils";
 
-export const renderSection = (body: HTMLElement) => {
-  const data0 = [
-    { src: "/section/section_1_1.webp" },
-    { src: "/section/section_1_2.webp" },
-    { src: "/section/section_1_3.webp" },
-    { src: "/section/section_1_4.webp" },
-    { src: "/section/section_1_5.webp" },
-    { src: "/section/section_1_6.webp" },
-    { src: "/section/section_2_1.webp" },
-    { src: "/section/section_2_2.webp" },
-    { src: "/section/section_2_3.webp" },
-    { src: "/section/section_2_4.webp" },
-    { src: "/section/section_2_5.webp" },
-    { src: "/section/section_2_6.webp" },
+export const renderSection = async (body: HTMLElement) => {
+  const sectionDataSrcs = [
+    "/data/section_1.json",
+    "/data/section_2.json",
+    "/data/section_3.json",
   ];
-  const carousel0 = composeCarousel("Sample0", data0, 5);
-  const carousel1 = composeCarousel("Sample1", data0, 4);
-  const carousel2 = composeCarousel("Sample2", data0, 6);
-  body.appendChild(carousel0);
-  body.appendChild(carousel1);
-  body.appendChild(carousel2);
+  const sectionDataResArr = await Promise.all(
+    sectionDataSrcs.map((src) => fetch(src)),
+  );
+  const sectionDataArr = await Promise.all(
+    sectionDataResArr.map((r) => r.json()),
+  );
+  sectionDataArr.forEach((sectionData) => {
+    const carousel = composeCarousel(
+      sectionData.title,
+      sectionData.data,
+      sectionData.pageSize,
+    );
+    body.appendChild(carousel);
+  });
 };
 export const composeCarousel = (
   title: string,

@@ -4,7 +4,7 @@ import { renderHero } from "./hero";
 import { renderSection } from "./section";
 
 const body = document.body;
-renderHeader(body);
-renderHero(body);
-renderSection(body);
+await renderHeader(body);
+await renderHero(body);
+await renderSection(body);
 renderFooter(body);
